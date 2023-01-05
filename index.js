@@ -3,75 +3,111 @@ const TOKEN = process.env.TOKEN;
 const APP_ID = process.env.APPLICATION_ID;
 const PUBLIC_KEY = process.env.PUBLIC_KEY;
 const GUILD_ID = process.env.GUILD_ID;
+const gpt3Key = process.env.GPT_API;
+const SecretKey = process.env.Secret;
 
-const { REST, Routes, Client, GatewayIntentBits, SlashCommandBuilder, CommandInteractionOptionResolver } = require('discord.js');
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+// const { REST, Routes, Client, GatewayIntentBits, SlashCommandBuilder, CommandInteractionOptionResolver } = require('discord.js');
+// const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 const { testCall, RequestHandler, commands } = require("./myTools");
 
-// starting the bot
-client.login(TOKEN);
+const axios = require('axios');
+const express = require('express');
+const { InteractionType, InteractionResponseType, verifyKeyMiddleware } = require('discord-interactions');
 
-// initializing the bot
-client.on("ready", async () => {
-    await init();
-    // await testCall();
-    console.log(`[${client.user.tag}] Firing With V Cylinders!`);
+
+const app = express();
+// app.use(bodyParser.json());
+
+const discord_api = axios.create({
+  baseURL: 'https://discord.com/api/',
+  timeout: 3000,
+  headers: {
+	"Access-Control-Allow-Origin": "*",
+	"Access-Control-Allow-Methods": "GET, POST, PUT, DELETE",
+	"Access-Control-Allow-Headers": "Authorization",
+	"Authorization": `Bot ${TOKEN}`
+  }
 });
 
-
-const env_Values = `
-Token: ${TOKEN}
-APP ID: ${APP_ID}
-Public Key: ${PUBLIC_KEY}
-Guild ID: ${GUILD_ID}
-`;
-
-
-/*
-challenges:
-    grabing user prompt for bot
-*/
-
-
-// initiallizing commands and registering them
-async function init()
-{
-    // establish api connection with discord
-    const rest = new REST({ version: '10' }).setToken(TOKEN);
+let bearerToken = null;
+let getBearerToken = async (req) => {
     
-    // assign commands to bot
+    const code=req.query.code;
+    const params = new URLSearchParams();
+    let user;
+    params.append('client_id', process.env.CLIENT_ID);
+    params.append('client_secret', process.env.CLIENT_SECRET);
+    params.append('grant_type', 'authorization_code');
+    params.append('code', code);
+    params.append('redirect_uri', "http://localhost:3000/register_commands");
+
+    const URL = 'https://discord.com/api/oauth2/token';
     try 
     {
-        console.log('Started refreshing application (/) commands.');
-        await rest.put(Routes.applicationCommands(APP_ID), { body: commands });
-        console.log('Successfully reloaded application (/) commands.');
-    }
-    catch (err)
+        let response = await axios.post(URL,params);
+        console.log(response);
+        console.log("in sucess");
+        return response;
+    } catch (err)
     {
         console.error(err);
+        console.log("in err\n\n\n\n\n");
+        console.log(err.request)
+        return err;
     }
 }
 
 
-client.on('interactionCreate', async interaction => {
-    if (!interaction.isChatInputCommand()) return;
+app.post('/interactions', verifyKeyMiddleware(PUBLIC_KEY), async (req, res) => {
+    const interaction = req.body;
 
-    /*
-    discord requires bots to reply within 3 seconds or defer the response
-    there are cases where we are going to need more than 15 seconds so we will reply and then edit the reply when the api call has responded
-    */
-
-    // generic response to satisefy discords 3s response rule
-    await interaction.reply("gimmie a sec");
-
-    const failedRequest = 500;
+    if (interaction.type !== InteractionType.APPLICATION_COMMAND) return;
+    
     const handler = new RequestHandler(interaction);
-    const command = interaction.commandName;
-    const botResponse = await handler.respond(command);
+    const request = interaction.data.name;
+    const response = await handler.respond(request);
 
-    console.log(`Response: ${botResponse}`);
+    console.log(`${request}\t${response}`);
 
-    // sucessful response 
-    await interaction.editReply(botResponse);
-            
+    return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+            content: response,
+        },
+    });
 });
+
+
+app.get('/register_commands', async (req,res) =>{
+
+    bearerToken = await getBearerToken(req);
+    console.log(`Bearer Token: ${bearerToken}`);
+    console.log(`Bearer Token: ${(bearerToken)? bearerToken.requests: "Request Failed"}`);
+//   try
+//   {
+//     // api docs - https://discord.com/developers/docs/interactions/application-commands#create-global-application-command
+//     let discord_response = await discord_api.post(
+//       `/applications/${APP_ID}/commands`,
+//       commands
+//     )
+//     console.log(discord_response)
+//     console.log(discord_response.data)
+//     return res.send('commands have been registered')
+//   }catch(e){
+//     console.error(e)
+//     console.error(e.code)
+//     console.error(e.response?.data)
+//     return res.send(`${e.code} error from discord`)
+//   }
+})
+
+
+app.get('/', async (req,res) =>{
+  return res.send('Follow documentation ')
+})
+
+
+app.listen(3000, () => {
+    console.log(`running on port ${3000}`);
+    console.log(commands);
+})

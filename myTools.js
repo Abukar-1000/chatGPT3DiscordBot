@@ -3,6 +3,7 @@ const { Client, GatewayIntentBits } = require('discord.js');
 const { Configuration, OpenAIApi } = require("openai");
 const axios = require('axios');
 const { resolve } = require('path');
+const { response } = require('express');
 const configuration = new Configuration({
   apiKey: process.env.GPT_API,
 });
@@ -105,9 +106,10 @@ class DavinciBot
             console.log(response.data.choices);
             return response.data.choices[0].text;
         }
-        catch
+        catch (err)
         {
-            // console.error(err.message);
+            console.error(err);
+            console.error(response.data);
             return `yo ${interactionObj.user} run that back`;
         }
         // try
@@ -161,8 +163,27 @@ class RequestHandler
 
 }
 
-async function testCall() {
-    return null
+async function testCall(userPrompt) {
+    console.log(`using ${process.env.GPT_API}`);
+    setTimeout(async () => {
+        try
+        {
+            const response = await openai.createCompletion({
+                model: "text-davinci-003",
+                prompt: userPrompt,
+                temperature: 0
+            });
+
+            console.log(response.data.choices);
+            return response.data.choices[0].text;
+        }
+        catch (err)
+        {
+            console.error(err);
+            console.error(response.data);
+            return `yo ${interactionObj.user} run that back`;
+        }
+    },5000);
 }
 
 
