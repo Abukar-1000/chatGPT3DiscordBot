@@ -78,10 +78,11 @@ app.post('/interactions', verifyKeyMiddleware(PUBLIC_KEY), async (req, res) => {
 
     // console.log(`${request}\t${response}`);
 
+    let response = 'question'
     return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-            content: `u asked a queastion`,
+            content: `u asked a ${response}`,
         },
     });
 });

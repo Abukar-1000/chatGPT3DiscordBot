@@ -91,8 +91,8 @@ class DavinciBot
     }
     async executeCall(interactionObj)
     {
-        let userPrompt = interactionObj.options.get("request").value;
-        let creativityChoice = interactionObj.options.get("creativity").value;
+        let userPrompt = interactionObj.data.options[1].value;
+        let creativityChoice = interactionObj.data.options[0].value;
 
         console.log(`${userPrompt} | ${creativityChoice} | ${interactionObj.user.username}`);
         try
@@ -110,7 +110,7 @@ class DavinciBot
         {
             console.error(err);
             console.error(response.data);
-            return `yo ${interactionObj.user} run that back`;
+            return `yo ${interactionObj.username} run that back`;
         }
         // try
         // {
