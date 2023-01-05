@@ -5,6 +5,7 @@ const PUBLIC_KEY = process.env.PUBLIC_KEY;
 const GUILD_ID = process.env.GUILD_ID;
 const gpt3Key = process.env.GPT_API;
 const SecretKey = process.env.Secret;
+const PORT = process.env.PORT || 3000
 
 // const { REST, Routes, Client, GatewayIntentBits, SlashCommandBuilder, CommandInteractionOptionResolver } = require('discord.js');
 // const client = new Client({ intents: [GatewayIntentBits.Guilds] });
@@ -107,7 +108,7 @@ app.get('/', async (req,res) =>{
 })
 
 
-app.listen(3000, () => {
+app.listen(PORT, () => {
     console.log(`running on port ${3000}`);
     // console.log(commands);
 })
