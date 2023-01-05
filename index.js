@@ -101,7 +101,7 @@ app.get('/register_commands', async (req,res) =>{
 //     console.error(e.response?.data)
 //     return res.send(`${e.code} error from discord`)
 //   }
-    res.send(JSON.stringify(commands));
+    res.send(commands);
 })
 
 
