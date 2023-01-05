@@ -65,18 +65,19 @@ app.post('/interactions', verifyKeyMiddleware(PUBLIC_KEY), async (req, res) => {
 
     if (interaction.type !== InteractionType.APPLICATION_COMMAND) return;
     
-    const handler = new RequestHandler(interaction);
-    const request = interaction.data.name;
-    const response = await handler.respond(request);
+    console.log(interaction);
+    // const handler = new RequestHandler(interaction);
+    // const request = interaction.data.name;
+    // const response = await handler.respond(request);
 
-    console.log(`${request}\t${response}`);
+    // console.log(`${request}\t${response}`);
 
-    return res.send({
-        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-        data: {
-            content: response,
-        },
-    });
+    // return res.send({
+    //     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+    //     data: {
+    //         content: response,
+    //     },
+    // });
 });
 
 
@@ -94,8 +95,6 @@ app.get('/register_commands', async (req,res) =>{
             `/v10/applications/${APP_ID}/commands`,
             command
         );
-        console.log(discord_response)
-        console.log(discord_response.data)
     }
     return res.send('commands have been registered')
   }catch(e){
