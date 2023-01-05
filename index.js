@@ -65,8 +65,8 @@ app.post('/interactions', verifyKeyMiddleware(PUBLIC_KEY), async (req, res) => {
 
     if (interaction.type !== InteractionType.APPLICATION_COMMAND) return;
     
-    let userPrompt = interactionObj.data.options[1].value;
-    let creativityChoice = interactionObj.data.options[0].value;
+    let userPrompt = interaction.data.options[1].value;
+    let creativityChoice = interaction.data.options[0].value;
     
     console.log(`\n\n\n\n\n\n${userPrompt}\n${creativityChoice}`);
 
