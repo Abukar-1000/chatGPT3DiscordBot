@@ -65,7 +65,7 @@ app.post('/interactions', verifyKeyMiddleware(PUBLIC_KEY), async (req, res) => {
 
     if (interaction.type !== InteractionType.APPLICATION_COMMAND) return;
     
-    console.log(interaction);
+    console.log(interaction.data.options);
 
     // const handler = new RequestHandler(interaction);
     // const request = interaction.data.name;
