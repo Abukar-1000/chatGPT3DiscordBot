@@ -90,7 +90,7 @@ app.get('/register_commands', async (req,res) =>{
     // api docs - https://discord.com/developers/docs/interactions/application-commands#create-global-application-command
     let discord_response = await discord_api.post(
       `/v10/applications/${APP_ID}/commands`,
-      JSON.stringify(commands)
+      commands
     )
     console.log(discord_response)
     console.log(discord_response.data)

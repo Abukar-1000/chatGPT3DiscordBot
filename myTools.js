@@ -11,7 +11,7 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 // craete commands
-const commands = [
+let commands = [
     {
         name: 'ping',
         description: 'Replies with Pong!',
