@@ -80,25 +80,25 @@ app.post('/interactions', verifyKeyMiddleware(PUBLIC_KEY), async (req, res) => {
 
 app.get('/register_commands', async (req,res) =>{
 
-    bearerToken = await getBearerToken(req);
-    console.log(`Bearer Token: ${bearerToken}`);
-    console.log(`Bearer Token: ${(bearerToken)? bearerToken.requests: "Request Failed"}`);
-//   try
-//   {
-//     // api docs - https://discord.com/developers/docs/interactions/application-commands#create-global-application-command
-//     let discord_response = await discord_api.post(
-//       `/applications/${APP_ID}/commands`,
-//       commands
-//     )
-//     console.log(discord_response)
-//     console.log(discord_response.data)
-//     return res.send('commands have been registered')
-//   }catch(e){
-//     console.error(e)
-//     console.error(e.code)
-//     console.error(e.response?.data)
-//     return res.send(`${e.code} error from discord`)
-//   }
+    // bearerToken = await getBearerToken(req);
+    // console.log(`Bearer Token: ${bearerToken}`);
+    // console.log(`Bearer Token: ${(bearerToken)? bearerToken.requests: "Request Failed"}`);
+  try
+  {
+    // api docs - https://discord.com/developers/docs/interactions/application-commands#create-global-application-command
+    let discord_response = await discord_api.post(
+      `/applications/${APP_ID}/commands`,
+      commands
+    )
+    console.log(discord_response)
+    console.log(discord_response.data)
+    return res.send('commands have been registered')
+  }catch(e){
+    console.error(e)
+    console.error(e.code)
+    console.error(e.response?.data)
+    return res.send(`${e.code} error from discord`)
+  }
 })
 
 
@@ -109,5 +109,5 @@ app.get('/', async (req,res) =>{
 
 app.listen(3000, () => {
     console.log(`running on port ${3000}`);
-    console.log(commands);
+    // console.log(commands);
 })
