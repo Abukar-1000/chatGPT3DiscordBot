@@ -89,7 +89,7 @@ app.post('/interactions', verifyKeyMiddleware(PUBLIC_KEY), async (req, res) => {
         },
     });
 
-    res.end();
+    return res.end();
 });
 
 // erdits a generic message sent in case we need to make an api call to resond to a message 
