@@ -18,7 +18,7 @@ const { InteractionType, InteractionResponseType, verifyKeyMiddleware } = requir
 
 
 const app = express();
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
 
 const discord_api = axios.create({
   baseURL: 'https://discord.com/api/',
@@ -65,7 +65,7 @@ app.post('/interactions', verifyKeyMiddleware(PUBLIC_KEY), async (req, res) => {
 
     if (interaction.type !== InteractionType.APPLICATION_COMMAND) return;
     
-    // console.log(interaction);
+    console.log(interaction);
 
     // const handler = new RequestHandler(interaction);
     // const request = interaction.data.name;
