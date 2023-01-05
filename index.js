@@ -87,11 +87,14 @@ app.get('/register_commands', async (req,res) =>{
     // console.log(`Bearer Token: ${(bearerToken)? bearerToken.requests: "Request Failed"}`);
   try
   {
-    // api docs - https://discord.com/developers/docs/interactions/application-commands#create-global-application-command
-    let discord_response = await discord_api.post(
-      `/v10/applications/${APP_ID}/commands`,
-      commands
-    )
+    for (const command of commands)
+    {
+        // api docs - https://discord.com/developers/docs/interactions/application-commands#create-global-application-command
+        let discord_response = await discord_api.post(
+            `/v10/applications/${APP_ID}/commands`,
+            command
+        );
+    }
     console.log(discord_response)
     console.log(discord_response.data)
     return res.send('commands have been registered')
