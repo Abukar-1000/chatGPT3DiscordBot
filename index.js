@@ -13,6 +13,7 @@ const { testCall, RequestHandler, commands } = require("./myTools");
 
 const axios = require('axios');
 const express = require('express');
+const bodyParser = require('body-parser');
 const { InteractionType, InteractionResponseType, verifyKeyMiddleware } = require('discord-interactions');
 
 
