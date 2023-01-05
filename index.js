@@ -65,19 +65,20 @@ app.post('/interactions', verifyKeyMiddleware(PUBLIC_KEY), async (req, res) => {
 
     if (interaction.type !== InteractionType.APPLICATION_COMMAND) return;
     
-    console.log(interaction);
+    // console.log(interaction);
+
     // const handler = new RequestHandler(interaction);
     // const request = interaction.data.name;
     // const response = await handler.respond(request);
 
     // console.log(`${request}\t${response}`);
 
-    // return res.send({
-    //     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-    //     data: {
-    //         content: response,
-    //     },
-    // });
+    return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+            content: interaction,
+        },
+    });
 });
 
 
