@@ -17,7 +17,7 @@ const { InteractionType, InteractionResponseType, verifyKeyMiddleware } = requir
 
 
 const app = express();
-// app.use(bodyParser.json());
+app.use(bodyParser.json());
 
 const discord_api = axios.create({
   baseURL: 'https://discord.com/api/',
@@ -109,6 +109,6 @@ app.get('/', async (req,res) =>{
 
 
 app.listen(PORT, () => {
-    console.log(`running on port ${3000}`);
+    console.log(`running on port ${PORT}`);
     // console.log(commands);
 })
