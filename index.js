@@ -98,7 +98,7 @@ app.get('/register_commands', async (req,res) =>{
   }catch(e){
     console.error(e)
     console.error(e.code)
-    console.error(e.response?.data)
+    console.error(e.response?.data.errors)
     return res.send(`${e.code} error from discord`)
   }
 })
