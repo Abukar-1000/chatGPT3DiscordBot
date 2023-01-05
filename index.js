@@ -59,7 +59,7 @@ let getBearerToken = async (req) => {
     }
 }
 
-
+// responds to a message
 app.post('/interactions', verifyKeyMiddleware(PUBLIC_KEY), async (req, res) => {
     const interaction = req.body;
 
@@ -87,7 +87,12 @@ app.post('/interactions', verifyKeyMiddleware(PUBLIC_KEY), async (req, res) => {
     });
 });
 
-
+// erdits a generic message sent in case we need to make an api call to resond to a message 
+app.patch("/webhooks/messages/@original", async (req,res) => {
+    const msg = req.body;
+    console.log(msg);
+});
+// registers bot commands 
 app.get('/register_commands', async (req,res) =>{
 
     // bearerToken = await getBearerToken(req);
