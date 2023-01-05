@@ -94,9 +94,9 @@ app.get('/register_commands', async (req,res) =>{
             `/v10/applications/${APP_ID}/commands`,
             command
         );
+        console.log(discord_response)
+        console.log(discord_response.data)
     }
-    console.log(discord_response)
-    console.log(discord_response.data)
     return res.send('commands have been registered')
   }catch(e){
     console.error(e)
