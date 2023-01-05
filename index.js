@@ -68,23 +68,28 @@ app.post('/interactions', verifyKeyMiddleware(PUBLIC_KEY), async (req, res) => {
     // grab the interaction id to edit the generic response sent 
     // generic response was sent because discord requires bots to respond within 3 seconds
 
-    const interactionToken = interaction.token;
-    
-    // console.log(`\n\n\n\n\n\n${userPrompt}\n${creativityChoice}`);
-
-    // const handler = new RequestHandler(interaction);
-    // const request = interaction.data.name;
-    // const response = await handler.respond(request);
-
-    // console.log(`${request}\t${response}`);
-
-    let response = 'question'
-    return res.send({
+    // generic response
+    res.write({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-            content: `u asked a ${response}`,
+            content: `gimmie a sec`,
         },
     });
+    // console.log(`\n\n\n\n\n\n${userPrompt}\n${creativityChoice}`);
+
+    const handler = new RequestHandler(interaction);
+    const request = interaction.data.name;
+    const response = await handler.respond(request);
+
+    // actuall response
+    res.write({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+            content: response,
+        },
+    });
+
+    res.end();
 });
 
 // erdits a generic message sent in case we need to make an api call to resond to a message 
