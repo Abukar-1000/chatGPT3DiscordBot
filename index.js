@@ -65,10 +65,12 @@ app.post('/interactions', verifyKeyMiddleware(PUBLIC_KEY), async (req, res) => {
 
     if (interaction.type !== InteractionType.APPLICATION_COMMAND) return;
     
-    let userPrompt = interaction.data.options[1].value;
-    let creativityChoice = interaction.data.options[0].value;
+    // grab the interaction id to edit the generic response sent 
+    // generic response was sent because discord requires bots to respond within 3 seconds
+
+    const interactionToken = interaction.token;
     
-    console.log(`\n\n\n\n\n\n${userPrompt}\n${creativityChoice}`);
+    // console.log(`\n\n\n\n\n\n${userPrompt}\n${creativityChoice}`);
 
     // const handler = new RequestHandler(interaction);
     // const request = interaction.data.name;
